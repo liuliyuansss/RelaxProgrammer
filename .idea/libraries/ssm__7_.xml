@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ssm (7)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jasper.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jasper-el.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

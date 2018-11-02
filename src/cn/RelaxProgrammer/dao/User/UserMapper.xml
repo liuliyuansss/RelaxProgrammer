@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.RelaxProgrammer.dao.User.UserMapper">
+
+    <!--（王同言）创建按照用户名和用户密码查询用户编码-->
+    <select id="CheckUser" resultMap="UserResult">
+select * from candy_user as u,candy_address as d
+where u.user_name =#{user_name} and u.user_password=#{user_password} and u.user_code=d.user_code
+    </select>
+    <resultMap id="UserResult" type="User">
+         <result property="user_code" column="user_code"/>
+         <result property="user_name" column="user_name"/>
+         <result property="user_password" column="user_password"/>
+         <result property="user_identity" column="user_identity"/>
+         <result property="user_birthday" column="user_birthday"/>
+         <result property="user_sex" column="user_sex"/>
+         <result property="user_email" column="user_email"/>
+         <result property="user_phone" column="user_phone"/>
+         <result property="user_reputation" column="user_reputation"/>
+         <result property="user_image" column="user_image"/>
+         <result property="user_createdate" column="user_createdate"/>
+         <collection property="address" ofType="Address" resultMap="AddressResult"></collection>
+    </resultMap>
+    <resultMap id="AddressResult" type="Address">
+        <result property="address_code" column="address_code"/>
+        <result property="isdefault" column="isdefault"/>
+        <result property="area_id" column="area_id"/>
+        <result property="detail_address" column="detail_address"/>
+        <result property="user_time" column="user_time"/>
+    </resultMap>
+    <!-- （刘建达）创建按照用户手机号码和用户密码查询用户编码-->
+    <select id="CheckCodeByp" resultType="String">
+     select user_code from candy_user
+     <where>
+         <if test="user_phone !=null and user_phone !=''">
+             and  user_phone=#{user_phone}
+         </if>
+     </where>
+    </select>
+    <!-- （刘建达）创建按照用户名称和用户密码查询用户编码-->
+    <select id="CheckCodeByn" resultType="String">
+        select user_code from candy_user
+        <where>
+            <if test="user_name !=null and user_name !=''">
+                and  user_name=#{user_name}
+            </if>
+        </where>
+    </select>
+    <!--（刘建达）创建按照用户邮箱地址和用户密码查询用户编码-->
+    <select id="CheckCodeBye" resultType="String">
+        select user_code from candy_user
+        <where>
+            <if test="user_email !=null and user_email !=''">
+                and  user_email=#{user_email}
+            </if>
+        </where>
+    </select>
+    <!--（刘建达）创建按照用户编码查询用户对象-->
+    <select id="CheckCodeByu" resultMap="UserResult">
+        select * from candy_user
+        <where>
+            <if test="user_code !=null and user_code !=''">
+                and  user_code=#{user_code}
+            </if>
+        </where>
+    </select>
+    <select id="CheckPasswordByu" resultType="String">
+        select user_password from candy_user where user_code=#{user_code}
+    </select>
+</mapper>

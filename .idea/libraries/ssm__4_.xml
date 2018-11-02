@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="ssm (4)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/catalina.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/catalina-ant.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/catalina-ha.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/catalina-tribes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/commons-codec-1.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

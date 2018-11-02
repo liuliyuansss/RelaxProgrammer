@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+">
+    <!--引用本地的数据库连接配置-->
+    <context:property-placeholder location="classpath:database.properties"/>
+    <!--使用DBCP创建数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" scope="singleton">
+        <property name="driverClassName" value="${driver}" />
+        <property name="url" value="${url}" />
+        <property name="username" value="${user}" />
+        <property name="password" value="${password}" />
+        <property name="initialSize" value="${initialSize}"/>
+        <property name="maxActive" value="${maxActive}"/>
+        <property name="maxIdle" value="${maxIdle}"/>
+        <property name="minIdle" value="${minIdle}"/>
+        <property name="maxWait" value="${maxWait}"/>
+        <property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}"/>
+        <property name="removeAbandoned" value="${removeAbandoned}"/>
+        <!-- sql 心跳 -->
+        <property name= "testWhileIdle" value="true"/>
+        <property name= "testOnBorrow" value="false"/>
+        <property name= "testOnReturn" value="false"/>
+        <property name= "validationQuery" value="select 1"/>
+        <property name= "timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name= "numTestsPerEvictionRun" value="${maxActive}"/>
+    </bean>
+    <!--创建会话工厂对象,用来生成SQLSession对象用-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="cn.RelaxProgrammer.pojo"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+    </bean>
+    <!--将同名的mybatis映射文件和同名的接口进行对应，生成对象,该对象由框架生成，无需关心-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.RelaxProgrammer.dao"/>
+    </bean>
+    <context:component-scan base-package="cn.RelaxProgrammer.service"/>
+    <bean id="themylogger" class="cn.RelaxProgrammer.aop.MyLogger"></bean>
+   <!-- <bean id="TestImplings" class="cn.RelaxProgrammer.dao.test.TestImplings"></bean>-->
+   <!-- <aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* cn.RelaxProgrammer.dao.test.*.*(..))"/>
+        &lt;!&ndash;引用包含增强方法的Bean&ndash;&gt;
+        <aop:aspect ref="themylogger">
+            &lt;!&ndash;将before作为增强的前置增强方法,并把pointcut切入点引入也就是在这个切入点之前调用增强的前置增强方法在切入点
+            之前调用前置增强方法&ndash;&gt;
+          &lt;!&ndash;  <aop:before method="Before" pointcut-ref="pointcut"></aop:before>
+            <aop:after-returning method="afterReturning" pointcut-ref="pointcut" returning="result"/>&ndash;&gt;
+            <aop:before method="before" pointcut-ref="pointcut"></aop:before>
+            <aop:after-returning method="afterReturning" pointcut-ref="pointcut" returning="returnValue"/>
+        </aop:aspect>
+    </aop:config>-->
+</beans>
